@@ -45,6 +45,8 @@ def get_origins():
     for row in result:
         results.append(row[0])
     
+    connect.commit()
+    connect.close() 
 #     print(results)
     return results
 
@@ -113,6 +115,8 @@ def get_males():
     result = cursor.fetchone()
     results.extend(result)   
     
+    connect.commit()
+    connect.close() 
 #     print(results)
     return results
 
@@ -181,6 +185,8 @@ def get_females():
     result = cursor.fetchone()
     results.extend(result)    
     
+    connect.commit()
+    connect.close() 
 #     print(results)
     return results
 
