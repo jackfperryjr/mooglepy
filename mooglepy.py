@@ -47,6 +47,7 @@ def get_origins():
     
     connect.commit()
     connect.close() 
+
 #     print(results)
     return results
 
@@ -117,6 +118,7 @@ def get_males():
     
     connect.commit()
     connect.close() 
+
 #     print(results)
     return results
 
@@ -187,6 +189,7 @@ def get_females():
     
     connect.commit()
     connect.close() 
+
 #     print(results)
     return results
 
@@ -218,6 +221,7 @@ def create_graph():
     plot.legend()
     plot.tight_layout()
     plot.show(block=False)
+
     mooglepy = os.path.expanduser("~/desktop/mooglepy")
     os.chdir(mooglepy)
     fig.savefig("mooglepy.png")
@@ -239,9 +243,11 @@ def main():
     total_males = str(totals[0])
     total_females = str(totals[1])
     total_unknown = str(totals[2])
+
     create_database()
     create_graph()
     clear_screen()
+
     print("\n")
     print("Final Fantasy began back in 1987 and grown and expanded across many iterations and spinoffs. This data comes from my own API and is incomplete.")
     print("But I'm looking at the ratio of male to female characters across the data I've compiled.")
