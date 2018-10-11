@@ -6,11 +6,13 @@ import numpy as np
 import os
 from os import system, name 
 
+# Setting some stuff to be used later (bad practice, I know).
 api_data = requests.get("https://www.moogleapi.com/api/characters")
 data_frame = pd.read_json(api_data.text)
 origins = data_frame.origin.nunique()
 
 def setup():
+    # Function to build the directory to be used.
     desktop = os.path.expanduser("~/desktop")
     os.chdir(desktop)
     
@@ -19,6 +21,7 @@ def setup():
         os.chdir('mooglepy')
 
 def create_database():
+    # Function to build the database.
     connect = sql.connect("mooglepy.db")
     data = data_frame.drop(['id', 'description', 'race', 'job', 'age', 'height', 'weight', 'picture'], axis=1)
     
@@ -36,6 +39,7 @@ def create_database():
     connect.close()    
 
 def get_origins():
+    # Function to build a list of iteration titles.
     connect = sql.connect("mooglepy.db")
     cursor = connect.cursor()
     results = []
@@ -46,12 +50,11 @@ def get_origins():
         results.append(row[0])
     
     connect.commit()
-    connect.close() 
-
-#     print(results)
+    connect.close()
     return results
 
 def get_males():
+    # Function to build a list of total males per iteration.
     connect = sql.connect("mooglepy.db")
     cursor = connect.cursor()
     results = []
@@ -117,12 +120,11 @@ def get_males():
     results.extend(result)   
     
     connect.commit()
-    connect.close() 
-
-#     print(results)
+    connect.close()
     return results
 
 def get_females():
+    # Function to build a list of total females per iteration.
     connect = sql.connect("mooglepy.db")
     cursor = connect.cursor()
     results = []
@@ -189,31 +191,29 @@ def get_females():
     
     connect.commit()
     connect.close() 
-
-#     print(results)
     return results
 
 def create_graph():
+    # Function to graph data.
     males = get_males()
     females = get_females()
-
     fig, ax = plot.subplots()
     index = np.arange(0, origins)
     bar_width = 0.35
     opacity = 0.7
-
+    # Defining the bar for males.
     male_bar = plot.bar(index, males, bar_width,
                       alpha=opacity,
                       color='blue',
                       label='Males')
-
+    # Defining the bar for females.
     female_bar = plot.bar(index + bar_width, females, bar_width,
                      alpha=opacity,
                      color='pink',
                      label='Females')
-
+    # Grabbing the origins to use for xticks.
     game_titles = get_origins()
-    
+    # Building the graph.
     plot.ylabel('Number of each')
     plot.title('Male and Female characters across Final Fantasy')
     plot.xticks(index + bar_width, game_titles, rotation='vertical')
@@ -221,33 +221,32 @@ def create_graph():
     plot.legend()
     plot.tight_layout()
     plot.show(block=False)
-
+    # Making sure we're in the created directory.
     mooglepy = os.path.expanduser("~/desktop/mooglepy")
     os.chdir(mooglepy)
+    # Saving the graph as a .png file.
     fig.savefig("mooglepy.png")
 
 def clear_screen(): 
+    # Function to clear the scree before output message.
     if name == 'nt': 
         _ = system('cls') 
-  
     else: 
         _ = system('clear')
 
 def main():
+    # Function to do all the stuff.
     setup()
-    
     totals = data_frame['gender'].value_counts()
-#     print('Males: ' + str(totals[0]))
-#     print('Females: ' + str(totals[1]))
-#     print('Unknown: ' + str(totals[2]))
+    # Getting totals for genders.
     total_males = str(totals[0])
     total_females = str(totals[1])
     total_unknown = str(totals[2])
-
     create_database()
     create_graph()
-    clear_screen()
 
+    # Output message once completed.
+    clear_screen()
     print("\n")
     print("Final Fantasy began back in 1987 and grown and expanded across many iterations and spinoffs. This data comes from my own API and is incomplete.")
     print("But I'm looking at the ratio of male to female characters across the data I've compiled.")
