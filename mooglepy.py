@@ -15,7 +15,7 @@ def setup():
     # Function to build the directory to be used.
     desktop = os.path.expanduser("~/desktop")
     os.chdir(desktop)
-    
+
     if not os.path.isdir('mooglepy'):
         os.makedirs('mooglepy')
         os.chdir('mooglepy')
@@ -23,18 +23,18 @@ def setup():
 def create_database():
     # Function to build the database.
     connect = sql.connect("mooglepy.db")
+    # Dropping columns I won't use from the API data.
     data = data_frame.drop(['id', 'description', 'race', 'job', 'age', 'height', 'weight', 'picture'], axis=1)
-    
+    # Rearranging the order the columns are in.
     columns = data.columns.tolist()
     columns = columns[+1:] + columns[:+1]
-
     data = data[columns]
+    # Splitting the data into male and female.
     data_male = data.query('gender=="Male"')
     data_female = data.query('gender=="Female"')
-
+    # Dumping data into Sqlite database.
     data_male.to_sql('male', connect, if_exists='replace', index=False)
     data_female.to_sql('female', connect, if_exists='replace', index=False)
-    
     connect.commit()
     connect.close()    
 
@@ -228,7 +228,7 @@ def create_graph():
     fig.savefig("mooglepy.png")
 
 def clear_screen(): 
-    # Function to clear the scree before output message.
+    # Function to clear the screen before output message.
     if name == 'nt': 
         _ = system('cls') 
     else: 
@@ -237,8 +237,8 @@ def clear_screen():
 def main():
     # Function to do all the stuff.
     setup()
-    totals = data_frame['gender'].value_counts()
     # Getting totals for genders.
+    totals = data_frame['gender'].value_counts()
     total_males = str(totals[0])
     total_females = str(totals[1])
     total_unknown = str(totals[2])
