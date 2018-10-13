@@ -128,13 +128,12 @@ def main():
 
     # Output message once completed.
     clear_screen()
-    print("\n")
-    print("Final Fantasy began back in 1987 and grown and expanded across many iterations and spinoffs. This data comes from my own API and is incomplete.")
-    print("But I'm looking at the ratio of male to female characters across the data I've compiled.")
+    print("*********************************************************************************\n")
+    print("I'm looking at the ratio of male to female characters across the data I've \ncompiled.")
     print('There are a total of ' + total_males + ' male characters and ' + total_females + ' female characters.')
-    print('Additionally, there are ' + total_unknown + ' unknown character genders across the Final Fantasy game data I have collected.')
-    print("\nYour mooglepy.db and mooglepy.png have been output to a directory on your desktop called mooglepy.")
-    print("\n")
+    print('Additionally, there are ' + total_unknown + ' unknown character genders across the Final Fantasy game \ndata I have collected.')
+    print("\nYour mooglepy.db and mooglepy.png have been output to a directory on your desktop \ncalled mooglepy.")
+    print("\n*********************************************************************************")
 
 if __name__ == "__main__":
     main()
