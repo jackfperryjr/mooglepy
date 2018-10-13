@@ -53,150 +53,31 @@ def get_origins():
     connect.close()
     return results
 
-def get_males():
-    # Function to build a list of total males per iteration.
+def get_genders(table):
+    # Function to build a list of total genders per iteration.
     connect = sql.connect("mooglepy.db")
     cursor = connect.cursor()
-    results = []
+    cursor.execute('select count(origin) from ' + table + ' group by origin')
+    result = cursor.fetchall()
+    results = [x[0] for x in result]
     
-    cursor.execute('select count(*) from male where origin="Final Fantasy 01"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 02"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 03"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 04"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 05"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 06"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 07"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 08"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 09"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 10"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 10-2" or origin="Final Fantasy 10"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 12"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 13"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 13-2" or origin="Final Fantasy 13"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from male where origin="Final Fantasy 15"')
-    result = cursor.fetchone()
-    results.extend(result)   
-    
+    if table == 'female':
+        results.insert(0,0)
+        results[10] = results[9] + results[10]
+        results[12:12] = [results[13]]
+
+    if table == 'male':
+        results[10:10] = [results[9]]
+        results[13] = results[12] + results[13]
+        
     connect.commit()
     connect.close()
     return results
 
-def get_females():
-    # Function to build a list of total females per iteration.
-    connect = sql.connect("mooglepy.db")
-    cursor = connect.cursor()
-    results = []
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 01"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 02"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 03"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 04"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 05"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 06"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 07"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 08"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 09"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 10"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 10-2" or origin="Final Fantasy 10"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 12"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 13"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 13-2" or origin="Final Fantasy 13"')
-    result = cursor.fetchone()
-    results.extend(result)
-    
-    cursor.execute('select count(*) from female where origin="Final Fantasy 15"')
-    result = cursor.fetchone()
-    results.extend(result)    
-    
-    connect.commit()
-    connect.close() 
-    return results
-
 def create_graph():
     # Function to graph data.
-    males = get_males()
-    females = get_females()
+    males = get_genders('male')
+    females = get_genders('female')
     fig, ax = plot.subplots()
     index = np.arange(0, origins)
     bar_width = 0.35
