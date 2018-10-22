@@ -24,11 +24,15 @@ def create_database():
     # Function to build the database.
     connect = sql.connect("mooglepy.db")
     # Dropping columns I won't use from the API data.
-    data = data_frame.drop(['id', 'description', 'race', 'job', 'age', 'height', 'weight', 'picture'], axis=1)
+    data = data_frame.drop(['id', 'description', 'race', 'job', 'age', 'height', 'weight', 'picture', 'hp'], axis=1)
     # Rearranging the order the columns are in.
     columns = data.columns.tolist()
     columns = columns[+1:] + columns[:+1]
     data = data[columns]
+    # Exporting new dataset/dataframe to .csv file.
+    data.to_csv('mooglepy.csv', sep=',')
+    # Exporting new dataset/dataframe to .xlsx file.
+    data.to_excel('mooglepy.xlsx', sheet_name='mooglepy', index=False)
     # Splitting the data into male and female.
     data_male = data.query('gender=="Male"')
     data_female = data.query('gender=="Female"')
@@ -132,7 +136,7 @@ def main():
     print("I'm looking at the ratio of male to female characters across the data I've \ncompiled.")
     print('There are a total of ' + total_males + ' male characters and ' + total_females + ' female characters.')
     print('Additionally, there are ' + total_unknown + ' unknown character genders across the Final Fantasy game \ndata I have collected.')
-    print("\nYour mooglepy.db and mooglepy.png have been output to a directory on your desktop \ncalled mooglepy.")
+    print("\nYour mooglepy files have been output to a directory on your desktop \ncalled mooglepy.")
     print("\n*********************************************************************************")
 
 if __name__ == "__main__":
