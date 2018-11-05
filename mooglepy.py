@@ -7,22 +7,22 @@ import os
 from os import system, name 
 
 # Setting some stuff to be used later (bad practice, I know).
-api_data = requests.get("https://www.moogleapi.com/api/characters")
+api_data = requests.get('https://www.moogleapi.com/api/characters')
 data_frame = pd.read_json(api_data.text)
 origins = data_frame.origin.nunique()
 
 def setup():
     # Function to build the directory to be used.
-    desktop = os.path.expanduser("~/desktop")
+    desktop = os.path.expanduser('~/desktop')
     os.chdir(desktop)
 
-    if not os.path.isdir('mooglepy'):
-        os.makedirs('mooglepy')
-        os.chdir('mooglepy')
+    if not os.path.isdir('ffgenders'):
+        os.makedirs('ffgenders')
+        os.chdir('ffgenders')
 
 def create_database():
     # Function to build the database.
-    connect = sql.connect("mooglepy.db")
+    connect = sql.connect('ffgenders.db')
     # Dropping columns I won't use from the API data.
     data = data_frame.drop(['id', 'description', 'race', 'job', 'age', 'height', 'weight', 'picture', 'hp'], axis=1)
     # Rearranging the order the columns are in.
@@ -30,9 +30,9 @@ def create_database():
     columns = columns[+1:] + columns[:+1]
     data = data[columns]
     # Exporting new dataset/dataframe to .csv file.
-    data.to_csv('mooglepy.csv', sep=',')
+    data.to_csv('ffgenders.csv', sep=',')
     # Exporting new dataset/dataframe to .xlsx file.
-    data.to_excel('mooglepy.xlsx', sheet_name='mooglepy', index=False)
+    data.to_excel('ffgenders.xlsx', sheet_name='ffgenders', index=False)
     # Splitting the data into male and female.
     data_male = data.query('gender=="Male"')
     data_female = data.query('gender=="Female"')
@@ -44,7 +44,7 @@ def create_database():
 
 def get_origins():
     # Function to build a list of iteration titles.
-    connect = sql.connect("mooglepy.db")
+    connect = sql.connect('ffgenders.db')
     cursor = connect.cursor()
     results = []
     cursor.execute('select origin from (select origin from male union all select origin from female) group by origin')
@@ -59,7 +59,7 @@ def get_origins():
 
 def get_genders(table):
     # Function to build a list of total genders per iteration.
-    connect = sql.connect("mooglepy.db")
+    connect = sql.connect('ffgenders.db')
     cursor = connect.cursor()
     cursor.execute('select count(origin) from ' + table + ' group by origin')
     result = cursor.fetchall()
@@ -107,10 +107,10 @@ def create_graph():
     plot.tight_layout()
     plot.show(block=False)
     # Making sure we're in the created directory.
-    mooglepy = os.path.expanduser("~/desktop/mooglepy")
+    mooglepy = os.path.expanduser('~/desktop/ffgenders')
     os.chdir(mooglepy)
     # Saving the graph as a .png file.
-    fig.savefig("mooglepy.png")
+    fig.savefig('ffgenders.png')
 
 def clear_screen(): 
     # Function to clear the screen before output message.
@@ -136,7 +136,7 @@ def main():
     print("I'm looking at the ratio of male to female characters across the data I've \ncompiled.")
     print('There are a total of ' + total_males + ' male characters and ' + total_females + ' female characters.')
     print('Additionally, there are ' + total_unknown + ' unknown character genders across the Final Fantasy game \ndata I have collected.')
-    print("\nYour mooglepy files have been output to a directory on your desktop \ncalled mooglepy.")
+    print("\nYour mooglepy files have been output to a directory on your desktop \ncalled ffgenders.")
     print("\n*********************************************************************************")
 
 if __name__ == "__main__":
