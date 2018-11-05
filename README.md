@@ -2,7 +2,7 @@
 
 ### Instructions
 
-I'm using:
+Modules you'll need:
 * matplotlib
 * numpy
 * pandas
