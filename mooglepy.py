@@ -13,9 +13,6 @@ origins = data_frame.origin.nunique()
 
 def setup():
     # Function to build the directory to be used.
-    desktop = os.path.expanduser('~/desktop')
-    os.chdir(desktop)
-
     if not os.path.isdir('ffgenders'):
         os.makedirs('ffgenders')
         os.chdir('ffgenders')
@@ -136,7 +133,7 @@ def main():
     print("I'm looking at the ratio of male to female characters across the data I've \ncompiled.")
     print('There are a total of ' + total_males + ' male characters and ' + total_females + ' female characters.')
     print('Additionally, there are ' + total_unknown + ' unknown character genders across the Final Fantasy game \ndata I have collected.')
-    print("\nYour mooglepy files have been output to a directory on your desktop \ncalled ffgenders.")
+    print("\nYour mooglepy files have been output to a directory called ffgenders.")
     print("\n*********************************************************************************")
 
 if __name__ == "__main__":
