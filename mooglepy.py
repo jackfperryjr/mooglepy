@@ -104,8 +104,6 @@ def create_graph():
     plot.tight_layout()
     plot.show(block=False)
     # Making sure we're in the created directory.
-    mooglepy = os.path.expanduser('~/desktop/ffgenders')
-    os.chdir(mooglepy)
     # Saving the graph as a .png file.
     fig.savefig('ffgenders.png')
 
