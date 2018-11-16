@@ -5,6 +5,7 @@ import matplotlib.pyplot as plot
 import numpy as np
 import os
 from os import system, name 
+from PIL import Image
 
 # Setting some stuff to be used later (bad practice, I know).
 api_data = requests.get('https://www.moogleapi.com/api/characters')
@@ -106,6 +107,8 @@ def create_graph():
     # Making sure we're in the created directory.
     # Saving the graph as a .png file.
     fig.savefig('ffgenders.png')
+    ffgenders = Image.open('ffgenders.png')
+    ffgenders.show()
 
 def clear_screen(): 
     # Function to clear the screen before output message.
